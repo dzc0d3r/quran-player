@@ -13,7 +13,6 @@ const QuranPlayer = () => {
     const [ayahsText, setAyahsText] = useState([])
     const [ayahsAudios, setAyahsAudios] = useState([])
 
-    const audioRef = useRef(null)
     let audio = document.querySelector('audio');
     let ayah = document.querySelector('.ayah');
 
@@ -65,14 +64,15 @@ const QuranPlayer = () => {
         changeAyah(ayahIndex)
 
 
-        audioRef.current.addEventListener('ended', () => {
+        audio.addEventListener('ended', () => {
             ayahIndex++;
-            console.log(audioRef)
+
             if (ayahIndex < ayahsAudios.length) {
                 changeAyah(ayahIndex);
 
 
-            } else {
+            } else if (ayahIndex === ayahsAudios.length) {
+                console.log()
                 AlertSwal.fire(
                     '   إنتهت السورة 🕋',
                     '  لا تنسونا من صالح دعائكم 😄🤲',
@@ -113,7 +113,7 @@ const QuranPlayer = () => {
 
 
                 </div>
-                <audio ref={audioRef} className="quranPlayer" controls autoPlay></audio>
+                <audio className="quranPlayer" controls autoPlay></audio>
                 <div className="buttons">
                     <div className="icons next">⏭️</div>
                     <div className="icons play">▶️</div>
