@@ -1,0 +1,117 @@
+.container {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 15px;
+    margin: 0 auto;
+
+
+
+    .player {
+        background-image: linear-gradient(to right top, #2e3b4a, #2c3846, #2b3543, #29333f, #27303c, #283543, #293b49, #294050, #285060, #26616e, #277379, #31847f);
+        top: 0;
+        padding: 20px;
+        margin: 10px 0;
+        border-radius: 5px;
+        position: sticky !important;
+        z-index: 2;
+
+        .ayah {
+            padding: 10px 0;
+            font-size: 2rem;
+            color: #fff;
+            text-align: center;
+
+        }
+
+        audio {
+            width: 100%;
+            height: 50px;
+            margin: 15px 0;
+
+
+
+
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+
+
+
+            .icons {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background-color: #fff;
+                display: grid;
+                place-items: center;
+                color: #313744;
+                font-size: 1.1rem;
+                cursor: pointer;
+            }
+        }
+
+
+
+
+    }
+
+    .surahs {
+
+        div {
+            color: #313744;
+            background-color: #fff;
+            box-shadow: 0 0 4px rgba(0, 0, 0, .8);
+            font-weight: 500;
+            font-size: 1.2rem;
+            width: calc(100% - 90px);
+            transition: .6s color ease-in-out;
+            cursor: pointer;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            position: relative;
+            counter-increment: surah-counter;
+
+            &::after {
+                content: counter(surah-counter);
+                position: absolute;
+                height: 80px;
+                width: 80px;
+                left: -90px;
+                top: 50%;
+                transform: translateY(-50%);
+                border-radius: 50%;
+                font-size: inherit;
+                line-height: 80px;
+                text-align: center;
+                transition: inherit;
+                background-color: inherit;
+                box-shadow: inherit;
+
+                &:hover {
+                    color: #fff;
+                    background-color: 2e3b4a;
+                }
+
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                border: 7px solid transparent;
+                border-right-color: #2e3b4a;
+                top: 50%;
+                transform: translateY(-50%);
+                left: -14px;
+            }
+
+            &:hover {
+
+                color: #fff;
+                background-color: #2e3b4a;
+            }
+        }
+    }
+
+}
