@@ -1,34 +1,28 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import axios from "axios"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faForward } from '@fortawesome/free-solid-svg-icons'
+import { faBackward } from '@fortawesome/free-solid-svg-icons'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import './QuranPlayer.scss'
 
 
-
 const apiBaseUrl = "https://api.quran.gading.dev/surah/"
+
+
+
 const QuranPlayer = () => {
 
     const [surahs, setSurahs] = useState([])
-    const [ayahsText, setAyahsText] = useState([])
-    const [ayahsAudios, setAyahsAudios] = useState([])
+
 
     let audio = document.querySelector('audio');
     let ayah = document.querySelector('.ayah');
 
 
-
-
     const AlertSwal = withReactContent(Swal)
-
-
-
-
-
-
-
-
-
     useEffect(() => {
         axios.get(apiBaseUrl)
             .then((response) => { setSurahs(response.data.data) })
@@ -39,13 +33,12 @@ const QuranPlayer = () => {
 
 
 
-    let ayahIndex = 0
+
+    let data = []
+
     const handleSurah = async (index) => {
-
-
-
-        let data = []
-
+        let ayahsText = []
+        let ayahsAudios = []
 
 
         await axios.get(`${apiBaseUrl}${index + 1}`)
@@ -55,15 +48,13 @@ const QuranPlayer = () => {
             })
 
 
-        setAyahsAudios(await data.verses);
-        setAyahsText(await data.verses);
 
-
-
-
+        data.verses.forEach(verse => {
+            ayahsText.push(verse.text.arab);
+            ayahsAudios.push(verse.audio.primary);
+        });
+        let ayahIndex = 0
         changeAyah(ayahIndex)
-
-
         audio.addEventListener('ended', () => {
             ayahIndex++;
 
@@ -72,30 +63,39 @@ const QuranPlayer = () => {
 
 
             } else if (ayahIndex === ayahsAudios.length) {
-                console.log()
+
                 AlertSwal.fire(
                     '   إنتهت السورة 🕋',
                     '  لا تنسونا من صالح دعائكم 😄🤲',
                     'success'
                 )
+                ayahsText = []
+                ayahsAudios = []
 
+
+
+            } else {
+
+                ayahIndex = 0;
             }
         });
+        function changeAyah(index) {
+
+
+
+            /* console.log(audio)
+            console.log(ayahsAudios) */
+            audio.src = ayahsAudios[index];
+
+            ayah.innerHTML = ayahsText[index];
+
+
+        }
 
 
 
     }
-    async function changeAyah() {
 
-
-
-        console.log(audio)
-        console.log(ayahsAudios)
-        audio.src = await ayahsAudios[ayahIndex].audio.primary;
-        ayah.innerHTML = await ayahsText[ayahIndex].text.arab;
-
-
-    }
 
 
 
@@ -115,9 +115,9 @@ const QuranPlayer = () => {
                 </div>
                 <audio className="quranPlayer" controls autoPlay></audio>
                 <div className="buttons">
-                    <div className="icons next">⏭️</div>
-                    <div className="icons play">▶️</div>
-                    <div className="icons prev">⏮️</div>
+                    <div className="icons next"><FontAwesomeIcon icon={faForward} /></div>
+                    <div className="icons play"><FontAwesomeIcon icon={faPlay} /></div>
+                    <div className="icons prev"><FontAwesomeIcon icon={faBackward} /></div>
                 </div>
 
             </div>
@@ -140,8 +140,6 @@ const QuranPlayer = () => {
 
 
             </div>
-
-
 
         </div>
 
