@@ -3,18 +3,17 @@ import axios from "axios"
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faForward } from '@fortawesome/free-solid-svg-icons'
-import { faBackward } from '@fortawesome/free-solid-svg-icons'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faForward, faBackward, faPlay } from '@fortawesome/free-solid-svg-icons'
 import './QuranPlayer.scss'
 
 
-const apiBaseUrl = "https://api.quran.gading.dev/surah/"
+
 
 
 
 const QuranPlayer = () => {
 
+    const apiBaseUrl = "https://api.quran.gading.dev/surah/"
     const [surahs, setSurahs] = useState([])
 
 
@@ -41,13 +40,12 @@ const QuranPlayer = () => {
         let ayahsAudios = []
 
 
+
         await axios.get(`${apiBaseUrl}${index + 1}`)
             .then((response) => { data = (response.data.data) })
             .catch(function (error) {
                 console.log(error.toJSON());
             })
-
-
 
         data.verses.forEach(verse => {
             ayahsText.push(verse.text.arab);
@@ -55,6 +53,7 @@ const QuranPlayer = () => {
         });
         let ayahIndex = 0
         changeAyah(ayahIndex)
+
         audio.addEventListener('ended', () => {
             ayahIndex++;
 
@@ -62,7 +61,7 @@ const QuranPlayer = () => {
                 changeAyah(ayahIndex);
 
 
-            } else if (ayahIndex === ayahsAudios.length) {
+            } else if (ayahIndex == ayahsAudios.length) {
 
                 AlertSwal.fire(
                     '   إنتهت السورة 🕋',
@@ -71,6 +70,8 @@ const QuranPlayer = () => {
                 )
                 ayahsText = []
                 ayahsAudios = []
+                changeAyah(ayahIndex)
+                audio.pause()
 
 
 
@@ -80,19 +81,9 @@ const QuranPlayer = () => {
             }
         });
         function changeAyah(index) {
-
-
-
-            /* console.log(audio)
-            console.log(ayahsAudios) */
             audio.src = ayahsAudios[index];
-
             ayah.innerHTML = ayahsText[index];
-
-
         }
-
-
 
     }
 
